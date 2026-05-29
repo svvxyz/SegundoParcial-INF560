@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('productos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('categoria_id')->constrained('categories')->cascadeOnDelete();
+            $table->foreignId('categoria_id')->constrained('categorias')->cascadeOnDelete();
             $table->string('nombre', 150);
             $table->string('sku', 50)->unique();
             $table->decimal('precio', 10, 2)->check('precio >= 0');
