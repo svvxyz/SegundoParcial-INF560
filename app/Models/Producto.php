@@ -26,9 +26,9 @@ class Producto extends Model
         'disponible' => 'boolean'
     ];
 
-    /* Relacion N-1 con l tabla categorias */
-    public function categorias(): BelongsTo
+    /* Relacion N-1 con la tabla categorias */
+    public function categoria(): BelongsTo
     {
-        return $this->belongsTo(Categoria::class);
+        return $this->belongsTo(Categoria::class, 'categoria_id');
     }
 }
