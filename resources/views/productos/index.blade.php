@@ -20,68 +20,72 @@
     </a>
 </div>
 
-<div class="glass-panel rounded-[2.5rem] overflow-hidden">
-    <table class="w-full text-left border-collapse">
-        <thead>
-            <tr class="border-b border-white/5 bg-white/5 uppercase text-[10px] font-black text-slate-500 tracking-widest">
-                <th class="px-8 py-6">Producto</th>
-                <th class="px-8 py-6">SKU</th>
-                <th class="px-8 py-6">Categoría</th>
-                <th class="px-8 py-6">Precio</th>
-                <th class="px-8 py-6">Stock</th>
-                <th class="px-8 py-6 text-right">Acciones</th>
-            </tr>
-        </thead>
-        <tbody class="divide-y divide-white/5">
-            @foreach($productos as $producto)
-            <tr class="group hover:bg-white/[0.02] transition-colors">
-                <td class="px-8 py-6">
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-lg">📦</div>
-                        <span class="text-white font-bold">{{ $producto->nombre }}</span>
-                    </div>
-                </td>
-                <td class="px-8 py-6 text-slate-400 font-mono text-sm">{{ $producto->sku }}</td>
-                <td class="px-8 py-6">
-                    <span class="text-[10px] uppercase font-black text-violet-400 bg-violet-400/10 px-3 py-1 rounded-full border border-violet-400/10 tracking-widest">
-                        {{ $producto->categoria?->nombre ?? 'Sin Categ.' }}
-                    </span>
-                </td>
-                <td class="px-8 py-6 text-white font-bold">Bs {{ number_format($producto->precio, 2) }}</td>
-                <td class="px-8 py-6">
-                    <div class="flex items-center gap-2">
-                        <div class="w-2 h-2 rounded-full {{ $producto->stock > 5 ? 'bg-emerald-500' : ($producto->stock > 0 ? 'bg-amber-500' : 'bg-red-500') }}"></div>
-                        <span class="text-sm font-semibold text-slate-300">{{ $producto->stock }}</span>
-                    </div>
-                </td>
-                <td class="px-8 py-6">
-                    <div class="flex items-center justify-end gap-2">
-                        <a href="{{ route('productos.show', $producto) }}" class="p-2.5 bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white rounded-xl transition-all" title="Ver detalles">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                            </svg>
-                        </a>
-                        <a href="{{ route('productos.edit', $producto) }}" class="p-2.5 bg-white/5 hover:bg-violet-600/20 text-slate-400 hover:text-violet-400 rounded-xl transition-all" title="Editar">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                            </svg>
-                        </a>
-                        <form action="{{ route('productos.destroy', $producto) }}" method="POST" class="inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="p-2.5 bg-white/5 hover:bg-red-600/20 text-slate-400 hover:text-red-400 rounded-xl transition-all" title="Eliminar">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                </svg>
-                            </button>
-                        </form>
-                    </div>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    @foreach($productos as $producto)
+    <div class="glass-panel p-8 rounded-[2.5rem] hover:border-violet-500/30 transition-all duration-500 group relative overflow-hidden">
+        <div class="absolute -top-10 -right-10 w-32 h-32 bg-violet-600/5 blur-3xl group-hover:bg-violet-600/10 transition-colors"></div>
+        
+        <div class="flex justify-between items-start mb-6">
+            <div class="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition-transform duration-500">
+                📦
+            </div>
+            <div class="flex flex-col items-end gap-2">
+                <span class="text-[10px] uppercase font-black text-violet-400 bg-violet-400/10 px-3 py-1.5 rounded-full tracking-widest border border-violet-400/10">
+                    {{ $producto->categoria?->nombre ?? 'Sin Categ.' }}
+                </span>
+                <span class="text-[10px] font-mono text-slate-600 group-hover:text-slate-400 transition-colors">
+                    {{ $producto->sku }}
+                </span>
+            </div>
+        </div>
+        
+        <div class="mb-8">
+            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-violet-400 transition-colors">{{ $producto->nombre }}</h3>
+            <div class="flex items-baseline gap-1">
+                <span class="text-3xl font-black text-white">Bs {{ number_format($producto->precio, 2) }}</span>
+            </div>
+        </div>
+
+        <div class="flex items-center justify-between pb-8 border-b border-white/5">
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full {{ $producto->stock > 5 ? 'bg-emerald-500' : ($producto->stock > 0 ? 'bg-amber-500' : 'bg-red-500') }} animate-pulse"></div>
+                <span class="text-sm font-semibold {{ $producto->stock > 0 ? 'text-slate-300' : 'text-red-400' }}">
+                    {{ $producto->stock }} <span class="text-slate-500 font-normal">unidades</span>
+                </span>
+            </div>
+            
+            @if($producto->disponible)
+                <span class="text-[10px] font-bold text-emerald-400 flex items-center gap-1 bg-emerald-400/5 px-2 py-1 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                    </svg>
+                    ACTIVO
+                </span>
+            @endif
+        </div>
+
+        <div class="flex items-center gap-3 pt-6">
+            <a href="{{ route('productos.show', $producto) }}" class="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-white/5 hover:bg-white/10 text-white rounded-xl font-bold transition-all">
+                Ver más
+            </a>
+            <div class="flex gap-2">
+                <a href="{{ route('productos.edit', $producto) }}" class="w-12 h-12 flex items-center justify-center bg-white/5 hover:bg-violet-600/20 hover:text-violet-400 text-slate-400 rounded-xl transition-all" title="Editar">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                    </svg>
+                </a>
+                <button 
+                    class="js-delete-btn w-12 h-12 flex items-center justify-center bg-white/5 hover:bg-red-600/20 hover:text-red-400 text-slate-400 rounded-xl transition-all" 
+                    data-delete-url="{{ route('productos.destroy', $producto) }}"
+                    title="Eliminar">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    @endforeach
 </div>
 
 @if($productos->isEmpty())

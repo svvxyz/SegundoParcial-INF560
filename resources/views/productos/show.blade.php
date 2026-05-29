@@ -23,13 +23,9 @@
                 </svg>
                 Editar
             </a>
-            <form action="{{ route('productos.destroy', $producto) }}" method="POST" class="inline">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="px-6 py-3 bg-red-500/10 hover:bg-red-500/20 text-red-500 rounded-2xl font-bold transition-all border border-red-500/10">
-                    Eliminar
-                </button>
-            </form>
+            <button class="js-delete-btn px-6 py-3 bg-red-500/10 hover:bg-red-500/20 text-red-500 rounded-2xl font-bold transition-all border border-red-500/10" data-delete-url="{{ route('productos.destroy', $producto) }}">
+                Eliminar
+            </button>
         </div>
     </div>
 

@@ -6,6 +6,7 @@
     <title>@yield('title', 'Catálogo') | catalogoApp</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
@@ -60,6 +61,20 @@
                 <p class="text-slate-500 mt-2 font-medium">@yield('subtitle')</p>
             </div>
 
+            @if(session('success'))
+                <div class="mb-10 flex items-center gap-4 p-5 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-[2rem] animate-in fade-in slide-in-from-top-4 duration-500">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="font-bold">Acción exitosa</p>
+                        <p class="text-sm opacity-80">{{ session('success') }}</p>
+                    </div>
+                </div>
+            @endif
+
             @yield('content')
         </div>
 
@@ -67,6 +82,44 @@
             <p class="text-slate-600 text-sm font-medium">© {{ date('Y') }} catalogoApp</p>
         </footer>
     </main>
+
+    <form id="delete-form" action="" method="POST" class="hidden">
+        @csrf
+        @method('DELETE')
+    </form>
+
+    <script>
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('js-delete-btn') || e.target.closest('.js-delete-btn')) {
+                const btn = e.target.classList.contains('js-delete-btn') ? e.target : e.target.closest('.js-delete-btn');
+                const url = btn.dataset.deleteUrl;
+                
+                Swal.fire({
+                    title: '¿Confirmar eliminación?',
+                    text: "Esta acción borrará el producto permanentemente",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    background: '#0a0a0c',
+                    color: '#fff',
+                    confirmButtonColor: '#7c3aed',
+                    cancelButtonColor: '#1e1e2e',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar',
+                    customClass: {
+                        popup: 'rounded-[2.5rem] border border-white/5 glass-panel',
+                        confirmButton: 'rounded-2xl px-8 py-4 font-bold',
+                        cancelButton: 'rounded-2xl px-8 py-4 font-bold'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const form = document.getElementById('delete-form');
+                        form.action = url;
+                        form.submit();
+                    }
+                });
+            }
+        });
+    </script>
 
 </body>
 </html>
